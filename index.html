@@ -32,7 +32,13 @@
             <div class="nav-section">
                 <div class="nav-title">Menu</div>
                 <ul class="nav-list">
-                    <li class="nav-item active" id="nav-user">
+                    <li class="nav-item active" id="nav-intro">
+                        <button onclick="switchView('intro')">
+                            <i class="ri-home-4-line"></i>
+                            <span>Home</span>
+                        </button>
+                    </li>
+                    <li class="nav-item" id="nav-user">
                         <button onclick="switchView('user')">
                             <i class="ri-disc-line"></i>
                             <span>Music Library</span>
@@ -100,8 +106,83 @@
                 </div>
             </header>
 
+            <!-- INTRO LANDING PAGE VIEW -->
+            <section class="page-view active" id="view-intro">
+                <div class="intro-hero">
+                    <div class="intro-hero-badge">
+                        <i class="ri-pulse-fill"></i> Dynamic Music Streaming Platform
+                    </div>
+                    <h1 class="intro-hero-title">Experience Endless Sound with <span class="gradient-text">Zmusic</span></h1>
+                    <p class="intro-hero-subtitle">
+                        Stream high-quality Cloudinary audio tracks directly synced with your Supabase database. Enjoy full player controls, real-time search, and an integrated Admin panel.
+                    </p>
+
+                    <div class="intro-cta-group">
+                        <button class="btn-hero-primary" onclick="switchView('user')">
+                            <i class="ri-play-circle-fill"></i> Launch Music Player
+                        </button>
+                        <button class="btn-hero-secondary" onclick="switchView('admin')">
+                            <i class="ri-dashboard-3-line"></i> Open Admin Panel
+                        </button>
+                        <button class="btn-hero-outline" onclick="openModal('modal-config')">
+                            <i class="ri-database-2-line"></i> Database Settings
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Feature Cards Highlights Grid -->
+                <div class="intro-features-section">
+                    <h2 class="intro-section-title">Platform Features</h2>
+                    <div class="intro-features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon" style="background: rgba(99, 102, 241, 0.15); color: #6366f1;">
+                                <i class="ri-headphone-fill"></i>
+                            </div>
+                            <h3>Cloudinary Audio Streaming</h3>
+                            <p>Plays MP3 audio links smoothly with play/pause, scrubbable progress bar, volume slider, and track controls.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
+                                <i class="ri-database-2-fill"></i>
+                            </div>
+                            <h3>Supabase Database Sync</h3>
+                            <p>Zero hardcoded tracks! Every song details, cover art, and audio link are dynamically fetched from your database.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon" style="background: rgba(236, 72, 153, 0.15); color: #ec4899;">
+                                <i class="ri-dashboard-fill"></i>
+                            </div>
+                            <h3>Admin CRUD Management</h3>
+                            <p>Add new tracks with live image preview, edit existing details, and delete songs with automatic real-time updates.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4;">
+                                <i class="ri-search-eye-line"></i>
+                            </div>
+                            <h3>Instant Search & Filter</h3>
+                            <p>Find your favorite tracks in seconds by filtering song titles, artist names, or album titles in real time.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Showcase Quick Play Banner -->
+                <div class="intro-showcase-banner">
+                    <div class="showcase-info">
+                        <span class="showcase-tag">FEATURED DEMO TRACK</span>
+                        <h3>Let Me Go — JayJen</h3>
+                        <p>Listen to a sample track loaded directly from Cloudinary.</p>
+                    </div>
+                    <button class="btn-hero-primary" onclick="playFeaturedDemoTrack()">
+                        <i class="ri-play-fill"></i> Play Track Now
+                    </button>
+                </div>
+            </section>
+
             <!-- USER SIDE VIEW: Music Player & Song Library -->
-            <section class="page-view active" id="view-user">
+            <section class="page-view" id="view-user">
                 <div class="hero-banner">
                     <div class="hero-text">
                         <h1>Stream High-Quality Music on Zmusic</h1>

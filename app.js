@@ -382,7 +382,12 @@ function switchView(viewName) {
     document.querySelectorAll('.page-view').forEach(view => view.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
 
-    if (viewName === 'user') {
+    if (viewName === 'intro') {
+        const viewIntro = document.getElementById('view-intro');
+        const navIntro = document.getElementById('nav-intro');
+        if (viewIntro) viewIntro.classList.add('active');
+        if (navIntro) navIntro.classList.add('active');
+    } else if (viewName === 'user') {
         const viewUser = document.getElementById('view-user');
         const navUser = document.getElementById('nav-user');
         if (viewUser) viewUser.classList.add('active');
@@ -402,6 +407,16 @@ function switchView(viewName) {
     // Close mobile sidebar if open
     const sidebar = document.getElementById('sidebar');
     if (sidebar) sidebar.classList.remove('open');
+}
+
+function playFeaturedDemoTrack() {
+    if (songsList && songsList.length > 0) {
+        currentSongIndex = 0;
+        loadAndPlaySong(songsList[0]);
+        showToast('Now Playing Featured Track: "Let Me Go" by JayJen 🎧', 'success');
+    } else {
+        showToast('Loading tracks from database...', 'info');
+    }
 }
 
 function toggleSidebar() {
