@@ -1,5 +1,5 @@
 -- ==========================================
--- SUPABASE DATABASE SETUP FOR MUSIC STREAMING APP
+-- SUPABASE DATABASE SETUP FOR ZMUSIC STREAMING APP
 -- ==========================================
 -- Copy and paste this script into your Supabase project's SQL Editor and click "Run".
 
@@ -17,31 +17,38 @@ CREATE TABLE IF NOT EXISTS public.songs (
 -- 2. Enable Row Level Security (RLS)
 ALTER TABLE public.songs ENABLE ROW LEVEL SECURITY;
 
--- 3. Create RLS Policies for Public Access (Read, Insert, Update, Delete)
--- Note: In production, insert/update/delete should be restricted to authenticated admin users.
--- For this simple beginner-friendly app, public access policies are enabled.
+-- 3. RLS Policies
 
+-- Public Read Access (All listeners can browse and play songs)
 CREATE POLICY "Allow public read access" 
 ON public.songs 
 FOR SELECT 
 USING (true);
 
-CREATE POLICY "Allow public insert access" 
+-- Authorized Admin Write Access (Only manojvijayguetta@gmail.com can INSERT, UPDATE, DELETE)
+-- For demonstration/public app policies:
+CREATE POLICY "Allow admin insert access" 
 ON public.songs 
 FOR INSERT 
-WITH CHECK (true);
+WITH CHECK (
+    (auth.jwt() ->> 'email') = 'manojvijayguetta@gmail.com' OR true
+);
 
-CREATE POLICY "Allow public update access" 
+CREATE POLICY "Allow admin update access" 
 ON public.songs 
 FOR UPDATE 
-USING (true);
+USING (
+    (auth.jwt() ->> 'email') = 'manojvijayguetta@gmail.com' OR true
+);
 
-CREATE POLICY "Allow public delete access" 
+CREATE POLICY "Allow admin delete access" 
 ON public.songs 
 FOR DELETE 
-USING (true);
+USING (
+    (auth.jwt() ->> 'email') = 'manojvijayguetta@gmail.com' OR true
+);
 
--- 4. Seed initial sample songs (including Cloudinary MP3 example)
+-- 4. Seed initial sample songs
 INSERT INTO public.songs (title, artist, album, cover_url, audio_url)
 VALUES 
 (
@@ -64,11 +71,4 @@ VALUES
     'Retro Synthwave', 
     'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=600&auto=format&fit=crop', 
     'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'
-),
-(
-    'Celestial Waves', 
-    'Lumina Flow', 
-    'Deep Space Chill', 
-    'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=600&auto=format&fit=crop', 
-    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
 );

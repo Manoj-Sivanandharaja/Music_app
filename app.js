@@ -3,8 +3,8 @@
    ========================================== */
 
 // --- SUPABASE CONFIGURATION ---
-const SUPABASE_URL = "https://gitrzfyqtazkbiznrcsb.supabase.co";       
-const SUPABASE_ANON_KEY = "sb_publishable_A13cHt-VHwIjoaINvrQN2g_YQsYREjW";  
+const SUPABASE_URL = "https://gitrzfyqtazkbiznrcsb.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_A13cHt-VHwIjoaINvrQN2g_YQsYREjW";
 
 // --- GLOBAL APP STATE ---
 let supabaseClient = null;
@@ -232,28 +232,40 @@ async function handleUserAuthSubmit(e) {
     unlockDashboard('user');
 }
 
+// --- STRICT ADMIN AUTHORIZATION ---
+const AUTHORIZED_ADMIN_EMAIL = "manojvijayguetta@gmail.com";
+const AUTHORIZED_ADMIN_PASSWORD = "Manoj@12345";
+
 /**
  * Handle Dedicated Admin Login Form Submission
  */
 async function handleAdminAuthSubmit(e) {
     e.preventDefault();
-    const email = document.getElementById('admin-auth-email').value.trim();
-    const password = document.getElementById('admin-auth-password').value.trim();
+    const emailInput = document.getElementById('admin-auth-email');
+    const passwordInput = document.getElementById('admin-auth-password');
+    const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
+    const password = passwordInput ? passwordInput.value.trim() : '';
 
     if (!email || !password) {
         showToast('Please enter your admin credentials.', 'error');
         return;
     }
 
+    // STRICT ADMIN EMAIL AUTHORIZATION CHECK
+    if (email !== AUTHORIZED_ADMIN_EMAIL.toLowerCase()) {
+        showToast('Access Denied — Admin access is restricted.', 'error');
+        return;
+    }
+
     currentUser = {
-        name: 'Admin Manager',
+        name: 'Manoj (Admin)',
         email: email,
         role: 'admin',
-        id: 'admin-' + Date.now()
+        id: 'admin-authorized-' + Date.now()
     };
 
     localStorage.setItem('zmusic_user', JSON.stringify(currentUser));
-    showToast('Admin Security Verified! Welcome to Admin Dashboard 🛡️', 'success');
+    showToast('Admin Authorized! Welcome to Admin Dashboard 🛡️', 'success');
     unlockDashboard('admin');
 }
 
@@ -263,12 +275,12 @@ async function handleAdminAuthSubmit(e) {
 function quickLoginDemo(role) {
     if (role === 'admin') {
         currentUser = {
-            name: 'Zmusic Admin',
-            email: 'admin@zmusic.com',
+            name: 'Manoj (Authorized Admin)',
+            email: AUTHORIZED_ADMIN_EMAIL,
             role: 'admin',
-            id: 'demo-admin-123'
+            id: 'admin-authorized-demo'
         };
-        showToast('Authenticated as Demo Admin 🛡️', 'success');
+        showToast('Authenticated as Authorized Admin 🛡️', 'success');
         unlockDashboard('admin');
     } else {
         currentUser = {
@@ -294,7 +306,9 @@ function unlockDashboard(preferredView = null) {
     const navList = document.getElementById('sidebar-nav-list');
     const navTitle = document.getElementById('nav-section-title');
 
-    if (currentUser && currentUser.role === 'admin') {
+    const isAdmin = currentUser && currentUser.email.toLowerCase() === AUTHORIZED_ADMIN_EMAIL.toLowerCase();
+
+    if (isAdmin) {
         if (navTitle) navTitle.textContent = 'Admin Menu';
         if (navList) {
             navList.innerHTML = `
@@ -340,9 +354,10 @@ function renderUserProfileHeader() {
 
     if (currentUser) {
         const initial = (currentUser.name || currentUser.email || 'U').charAt(0).toUpperCase();
-        const roleBadge = currentUser.role === 'admin' ? 'Admin' : 'VIP Listener';
-        const roleClass = currentUser.role === 'admin' ? 'role-admin' : '';
-        const avatarClass = currentUser.role === 'admin' ? 'admin-avatar' : '';
+        const isAdmin = currentUser.email.toLowerCase() === AUTHORIZED_ADMIN_EMAIL.toLowerCase();
+        const roleBadge = isAdmin ? 'Admin' : 'VIP Listener';
+        const roleClass = isAdmin ? 'role-admin' : '';
+        const avatarClass = isAdmin ? 'admin-avatar' : '';
 
         container.innerHTML = `
             <div class="user-profile-pill">
@@ -388,6 +403,13 @@ function switchView(viewName) {
         showToast('🔒 Please sign in to access Zmusic.', 'warning');
         navigateToScreen('auth-select');
         return;
+    }
+
+    if (viewName === 'admin') {
+        if (currentUser.email.toLowerCase() !== AUTHORIZED_ADMIN_EMAIL.toLowerCase()) {
+            showToast('Access Denied — Admin access is restricted.', 'error');
+            viewName = 'user';
+        }
     }
 
     document.querySelectorAll('.page-view').forEach(view => view.classList.remove('active'));

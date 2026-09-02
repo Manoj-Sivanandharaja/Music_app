@@ -1897,15 +1897,110 @@ body {
     }
 }
 
-/* Responsive Media Queries */
+/* Responsive Media Queries - Mobile First & Ultra Responsive */
 @media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+
+    .standalone-auth-wrapper {
+        padding: 0;
+    }
+
+    .auth-screen {
+        padding: 24px 16px;
+    }
+
+    #screen-intro {
+        padding-top: 16px;
+        padding-bottom: 24px;
+        justify-content: space-between;
+    }
+
+    .intro-navbar {
+        padding: 0 4px;
+    }
+
+    .hero-tag-pill {
+        font-size: 0.72rem;
+        padding: 6px 14px;
+        margin-bottom: 16px;
+    }
+
+    .hero-title-main {
+        font-size: clamp(1.9rem, 7.5vw, 2.8rem);
+        letter-spacing: -0.5px;
+        margin-bottom: 16px;
+    }
+
+    .hero-subtitle-main {
+        font-size: 0.95rem;
+        margin-bottom: 28px;
+    }
+
+    .hero-btn-group {
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+        margin-bottom: 32px;
+    }
+
+    .btn-hero-launch, .btn-hero-secondary-demo {
+        width: 100%;
+        justify-content: center;
+        padding: 16px 24px;
+    }
+
+    .intro-footer-stats {
+        flex-direction: column;
+        gap: 16px;
+        padding: 20px;
+    }
+
+    .stat-divider {
+        width: 100%;
+        height: 1px;
+    }
+
+    .auth-select-container {
+        padding-top: 50px;
+    }
+
+    .auth-portals-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .portal-card {
+        padding: 28px 20px;
+    }
+
+    .auth-card-wrapper {
+        padding-top: 40px;
+        max-width: 100%;
+    }
+
+    .auth-card {
+        padding: 24px 18px;
+    }
+
+    .btn-back-intro {
+        top: 14px;
+        left: 14px;
+        padding: 8px 14px;
+        font-size: 0.78rem;
+    }
+
     .sidebar {
-        position: absolute;
+        position: fixed;
         top: 0;
         bottom: 0;
         left: 0;
+        width: 270px;
+        height: 100vh;
+        z-index: 100;
         transform: translateX(-100%);
-        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.7);
     }
 
     .sidebar.open {
@@ -1916,36 +2011,116 @@ body {
         display: block;
     }
 
-    .page-view {
-        padding: 20px;
+    .top-header {
+        padding: 12px 16px;
     }
 
-    .hero-title-main {
-        font-size: 2.2rem;
+    .search-box .search-input {
+        padding-left: 38px;
+        font-size: 0.82rem;
+    }
+
+    .page-view {
+        padding: 16px;
     }
 
     .hero-banner {
-        padding: 20px;
+        padding: 20px 16px;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .songs-grid {
+        grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+        gap: 14px;
+    }
+
+    .song-card {
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .admin-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .admin-card {
+        padding: 20px 16px;
     }
 
     .player-bar {
-        padding: 0 16px;
+        padding: 0 12px;
+        height: 80px;
     }
 
     .player-track-info {
-        width: 40%;
+        width: 45%;
+        min-width: 130px;
+        gap: 10px;
+    }
+
+    .player-cover {
+        width: 44px;
+        height: 44px;
+    }
+
+    .player-title {
+        font-size: 0.85rem;
+    }
+
+    .player-artist {
+        font-size: 0.72rem;
     }
 
     .player-center {
-        width: 60%;
+        width: 55%;
+    }
+
+    .control-btns {
+        gap: 10px;
+    }
+
+    .btn-play-main {
+        width: 38px;
+        height: 38px;
+        font-size: 1.1rem;
+    }
+
+    .btn-ctrl {
+        font-size: 0.95rem;
     }
 
     .player-right {
         display: none;
     }
 
-    .btn-back-intro {
-        top: 16px;
+    .toast-container {
         left: 16px;
+        right: 16px;
+        bottom: 90px;
+    }
+
+    .toast {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title-main {
+        font-size: 1.75rem;
+    }
+
+    .hero-subtitle-main {
+        font-size: 0.88rem;
+    }
+
+    .songs-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .control-btns #btn-shuffle, .control-btns #btn-repeat {
+        display: none;
     }
 }
