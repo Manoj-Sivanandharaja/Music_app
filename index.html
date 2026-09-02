@@ -182,12 +182,12 @@
                     </div>
 
                     <!-- User Auth Form -->
-                    <form id="user-auth-form" onsubmit="handleUserAuthSubmit(event)">
+                    <form id="user-auth-form" autocomplete="off" onsubmit="handleUserAuthSubmit(event)">
                         <div class="form-group" id="group-user-name" style="display: none;">
                             <label class="form-label" for="user-auth-name">Full Name</label>
                             <div class="input-with-icon">
                                 <i class="ri-user-line input-icon"></i>
-                                <input type="text" id="user-auth-name" class="form-input" placeholder="e.g. Manoj Kumar">
+                                <input type="text" id="user-auth-name" class="form-input" placeholder="e.g. Manoj Kumar" autocomplete="off">
                             </div>
                         </div>
 
@@ -196,7 +196,7 @@
                             <div class="input-with-icon">
                                 <i class="ri-mail-line input-icon"></i>
                                 <input type="email" id="user-auth-email" class="form-input"
-                                    placeholder="user@zmusic.com" required>
+                                    placeholder="Enter your email" value="" autocomplete="off" required>
                             </div>
                         </div>
 
@@ -205,7 +205,7 @@
                             <div class="input-with-icon">
                                 <i class="ri-lock-2-line input-icon"></i>
                                 <input type="password" id="user-auth-password" class="form-input" placeholder="••••••••"
-                                    required>
+                                    value="" autocomplete="new-password" required>
                                 <button type="button" class="toggle-pwd-btn"
                                     onclick="togglePasswordVisibility('user-auth-password', this)">
                                     <i class="ri-eye-off-line"></i>
@@ -255,13 +255,13 @@
                     </div>
 
                     <!-- Admin Auth Form -->
-                    <form id="admin-auth-form" onsubmit="handleAdminAuthSubmit(event)">
+                    <form id="admin-auth-form" autocomplete="off" onsubmit="handleAdminAuthSubmit(event)">
                         <div class="form-group">
                             <label class="form-label" for="admin-auth-email">Admin Email *</label>
                             <div class="input-with-icon">
                                 <i class="ri-mail-line input-icon"></i>
                                 <input type="email" id="admin-auth-email" class="form-input"
-                                    placeholder="manojvijayguetta@gmail.com" required>
+                                    placeholder="Enter admin email" value="" autocomplete="off" required>
                             </div>
                             <span style="font-size: 0.72rem; color: var(--accent-cyan); margin-top: 2px;">
                                 <i class="ri-lock-line"></i> Only manojvijayguetta@gmail.com is authorized.
@@ -273,7 +273,7 @@
                             <div class="input-with-icon">
                                 <i class="ri-key-2-line input-icon"></i>
                                 <input type="password" id="admin-auth-password" class="form-input" placeholder="••••••••"
-                                    required>
+                                    value="" autocomplete="new-password" required>
                                 <button type="button" class="toggle-pwd-btn"
                                     onclick="togglePasswordVisibility('admin-auth-password', this)">
                                     <i class="ri-eye-off-line"></i>

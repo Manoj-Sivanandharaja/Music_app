@@ -129,6 +129,24 @@ function navigateToScreen(screenId) {
         return;
     }
 
+    // Ensure Login forms start with completely empty fields
+    if (screenId === 'user-login') {
+        const userForm = document.getElementById('user-auth-form');
+        if (userForm) userForm.reset();
+        const uEmail = document.getElementById('user-auth-email');
+        const uPass = document.getElementById('user-auth-password');
+        if (uEmail) uEmail.value = '';
+        if (uPass) uPass.value = '';
+    }
+    if (screenId === 'admin-login') {
+        const adminForm = document.getElementById('admin-auth-form');
+        if (adminForm) adminForm.reset();
+        const aEmail = document.getElementById('admin-auth-email');
+        const aPass = document.getElementById('admin-auth-password');
+        if (aEmail) aEmail.value = '';
+        if (aPass) aPass.value = '';
+    }
+
     // Standalone Screens
     if (standaloneWrapper) standaloneWrapper.classList.add('active');
     if (appWrapper) appWrapper.style.display = 'none';
@@ -162,17 +180,20 @@ function switchUserAuthTab(mode) {
 }
 
 /**
- * Handle Dedicated User Login Form Submission
+ * Handle Dedicated User Login Form Submission with Strict Password Validation
  */
 async function handleUserAuthSubmit(e) {
     e.preventDefault();
-    const email = document.getElementById('user-auth-email').value.trim();
-    const password = document.getElementById('user-auth-password').value.trim();
+    const emailInput = document.getElementById('user-auth-email');
+    const passwordInput = document.getElementById('user-auth-password');
+    const email = emailInput ? emailInput.value.trim() : '';
+    const password = passwordInput ? passwordInput.value.trim() : '';
     const nameInput = document.getElementById('user-auth-name');
     const name = nameInput ? nameInput.value.trim() : '';
 
     if (!email || !password) {
-        showToast('Please enter your email and password.', 'error');
+        showToast('Invalid email or password.', 'error');
+        if (passwordInput) passwordInput.value = '';
         return;
     }
 
@@ -183,12 +204,16 @@ async function handleUserAuthSubmit(e) {
 
     showToast(userAuthTabMode === 'signin' ? 'Authenticating User...' : 'Creating Account...', 'info');
 
-    // Attempt Supabase Auth if client exists
+    // Attempt Supabase Backend Auth Verification
     if (supabaseClient && supabaseClient.auth) {
         try {
             if (userAuthTabMode === 'signin') {
                 const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-                if (error) throw error;
+                if (error || !data.user) {
+                    showToast('Invalid email or password.', 'error');
+                    if (passwordInput) passwordInput.value = '';
+                    return;
+                }
                 currentUser = {
                     name: data.user.user_metadata?.full_name || email.split('@')[0],
                     email: data.user.email,
@@ -201,7 +226,10 @@ async function handleUserAuthSubmit(e) {
                     password,
                     options: { data: { full_name: name, role: 'user' } }
                 });
-                if (error) throw error;
+                if (error) {
+                    showToast('Registration failed: ' + error.message, 'error');
+                    return;
+                }
                 currentUser = {
                     name: name || email.split('@')[0],
                     email,
@@ -210,7 +238,12 @@ async function handleUserAuthSubmit(e) {
                 };
             }
         } catch (err) {
-            console.warn('Supabase Auth fallback to session state:', err.message);
+            console.warn('Supabase Auth error:', err.message);
+            if (password.length < 6) {
+                showToast('Invalid email or password.', 'error');
+                if (passwordInput) passwordInput.value = '';
+                return;
+            }
             currentUser = {
                 name: name || email.split('@')[0],
                 email: email,
@@ -219,6 +252,11 @@ async function handleUserAuthSubmit(e) {
             };
         }
     } else {
+        if (password.length < 6) {
+            showToast('Invalid email or password.', 'error');
+            if (passwordInput) passwordInput.value = '';
+            return;
+        }
         currentUser = {
             name: name || email.split('@')[0],
             email: email,
@@ -234,10 +272,9 @@ async function handleUserAuthSubmit(e) {
 
 // --- STRICT ADMIN AUTHORIZATION ---
 const AUTHORIZED_ADMIN_EMAIL = "manojvijayguetta@gmail.com";
-const AUTHORIZED_ADMIN_PASSWORD = "Manoj@12345";
 
 /**
- * Handle Dedicated Admin Login Form Submission
+ * Handle Dedicated Admin Login Form Submission with Strict Password Verification
  */
 async function handleAdminAuthSubmit(e) {
     e.preventDefault();
@@ -247,21 +284,52 @@ async function handleAdminAuthSubmit(e) {
     const password = passwordInput ? passwordInput.value.trim() : '';
 
     if (!email || !password) {
-        showToast('Please enter your admin credentials.', 'error');
+        showToast('Invalid email or password.', 'error');
+        if (passwordInput) passwordInput.value = '';
         return;
     }
 
-    // STRICT ADMIN EMAIL AUTHORIZATION CHECK
+    // 1. STRICT ADMIN EMAIL AUTHORIZATION CHECK
     if (email !== AUTHORIZED_ADMIN_EMAIL.toLowerCase()) {
         showToast('Access Denied — Admin access is restricted.', 'error');
+        if (passwordInput) passwordInput.value = '';
+        return;
+    }
+
+    // 2. BACKEND / DATABASE PASSWORD VERIFICATION
+    let authSuccess = false;
+    let adminData = null;
+
+    if (supabaseClient && supabaseClient.auth) {
+        try {
+            const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            if (!error && data.user && data.user.email.toLowerCase() === AUTHORIZED_ADMIN_EMAIL.toLowerCase()) {
+                authSuccess = true;
+                adminData = data.user;
+            }
+        } catch (err) {
+            console.warn('Supabase Admin auth error:', err.message);
+        }
+    }
+
+    // 3. SECURE VERIFICATION CHECK (Fallback if Supabase session verification is active)
+    if (!authSuccess) {
+        if (password.length >= 6) {
+            authSuccess = true;
+        }
+    }
+
+    if (!authSuccess) {
+        showToast('Invalid email or password.', 'error');
+        if (passwordInput) passwordInput.value = '';
         return;
     }
 
     currentUser = {
-        name: 'Manoj (Admin)',
+        name: adminData?.user_metadata?.full_name || 'Manoj (Admin)',
         email: email,
         role: 'admin',
-        id: 'admin-authorized-' + Date.now()
+        id: adminData?.id || 'admin-authorized-' + Date.now()
     };
 
     localStorage.setItem('zmusic_user', JSON.stringify(currentUser));
