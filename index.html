@@ -104,35 +104,60 @@
                 </div>
             </header>
 
-            <!-- INTRO LANDING PAGE VIEW -->
+            <!-- ANIMATED INTRO LANDING PAGE VIEW -->
             <section class="page-view active" id="view-intro">
-                <div class="intro-hero">
-                    <div class="intro-hero-badge">
-                        <i class="ri-pulse-fill"></i> Dynamic Music Streaming Platform
+                <div class="intro-animated-container">
+                    <!-- Animated Ambient Background Glow Rings -->
+                    <div class="intro-bg-glow glow-1"></div>
+                    <div class="intro-bg-glow glow-2"></div>
+
+                    <!-- Glowing Animated Brand Logo -->
+                    <div class="intro-brand-animated">
+                        <div class="intro-logo-ring">
+                            <i class="ri-pulse-fill"></i>
+                        </div>
+                        <span class="intro-brand-title">Zmusic</span>
                     </div>
-                    <h1 class="intro-hero-title">Experience Endless Sound with <span class="gradient-text">Zmusic</span>
+
+                    <!-- Main Animated Title & Subtitle -->
+                    <h1 class="intro-main-title">
+                        Experience Endless Sound with <span class="gradient-text">Zmusic</span>
                     </h1>
-                    <p class="intro-hero-subtitle">
-                        Stream high-quality Cloudinary audio tracks directly synced with your Supabase database. Enjoy
-                        full player controls, real-time search, and an integrated Admin panel.
+                    <p class="intro-main-subtitle">
+                        Stream high-quality Cloudinary audio tracks synced in real-time with your Supabase database.
+                        Full audio controls, search, and integrated Admin management.
                     </p>
 
-                    <div class="intro-cta-group">
-                        <button class="btn-hero-primary" onclick="switchView('user')">
-                            <i class="ri-play-circle-fill"></i> Launch Music Player
-                        </button>
-                        <button class="btn-hero-secondary" onclick="switchView('admin')">
-                            <i class="ri-dashboard-3-line"></i> Open Admin Panel
-                        </button>
-                        <button class="btn-hero-outline" onclick="openModal('modal-config')">
-                            <i class="ri-database-2-line"></i> Database Settings
+                    <!-- Dynamic Soundwave Equalizer Animation -->
+                    <div class="intro-equalizer-wrapper">
+                        <div class="intro-eq-bar bar-1"></div>
+                        <div class="intro-eq-bar bar-2"></div>
+                        <div class="intro-eq-bar bar-3"></div>
+                        <div class="intro-eq-bar bar-4"></div>
+                        <div class="intro-eq-bar bar-5"></div>
+                        <div class="intro-eq-bar bar-6"></div>
+                        <div class="intro-eq-bar bar-7"></div>
+                        <div class="intro-eq-bar bar-8"></div>
+                    </div>
+
+                    <!-- CTA Action Button to Proceed to Login -->
+                    <div class="intro-action-box">
+                        <button class="btn-intro-enter" onclick="proceedFromIntroToLogin()">
+                            <span>Proceed to Login</span>
+                            <i class="ri-arrow-right-line"></i>
                         </button>
                     </div>
+
+                    <!-- Auto Transition Timer Indicator -->
+                    <div class="intro-timer-bar-wrapper">
+                        <div class="intro-timer-bar-fill" id="intro-timer-fill"></div>
+                    </div>
+                    <span class="intro-timer-label">Auto-proceeding to Login page...</span>
                 </div>
 
-                <!-- Feature Cards Highlights Grid -->
-                <div class="intro-features-section">
-                    <h2 class="intro-section-title">Platform Features</h2>
+                <!-- Feature Highlights Cards -->
+                <div class="intro-features-section" style="margin-top: 40px;">
+                    <h2 class="intro-section-title">Platform Highlights</h2>
                     <div class="intro-features-grid">
                         <div class="feature-card">
                             <div class="feature-icon" style="background: rgba(99, 102, 241, 0.15); color: #6366f1;">
@@ -170,18 +195,6 @@
                                 titles in real time.</p>
                         </div>
                     </div>
-                </div>
-
-                <!-- Showcase Quick Play Banner -->
-                <div class="intro-showcase-banner">
-                    <div class="showcase-info">
-                        <span class="showcase-tag">FEATURED DEMO TRACK</span>
-                        <h3>Let Me Go — JayJen</h3>
-                        <p>Listen to a sample track loaded directly from Cloudinary.</p>
-                    </div>
-                    <button class="btn-hero-primary" onclick="playFeaturedDemoTrack()">
-                        <i class="ri-play-fill"></i> Play Track Now
-                    </button>
                 </div>
             </section>
 

@@ -61,6 +61,12 @@ document.addEventListener('DOMContentLoaded', () => {
     initUserSession();
     setupAudioEventListeners();
     fetchSongsFromSupabase();
+
+    // Trigger animated intro timer if starting on intro page
+    const viewIntro = document.getElementById('view-intro');
+    if (viewIntro && viewIntro.classList.contains('active')) {
+        initIntroAutoTimer();
+    }
 });
 
 /**
@@ -374,11 +380,57 @@ async function handleLogout() {
     currentUser = null;
     localStorage.removeItem('zmusic_user');
     renderUserProfileHeader();
-    showToast('You have been logged out of Zmusic.', 'info');
+    showToast('You have logged out. Please sign in to continue.', 'info');
+    switchView('login');
 }
 
-// --- VIEW NAVIGATION & SEARCH ---
+// --- VIEW NAVIGATION & INTRO SEQUENCING ---
+
+let introAutoTimer = null;
+
+function initIntroAutoTimer() {
+    const timerFill = document.getElementById('intro-timer-fill');
+    if (timerFill) {
+        timerFill.classList.remove('running');
+        void timerFill.offsetWidth; // force reflow to restart animation
+        timerFill.classList.add('running');
+    }
+
+    if (introAutoTimer) clearTimeout(introAutoTimer);
+    introAutoTimer = setTimeout(() => {
+        const viewIntro = document.getElementById('view-intro');
+        if (viewIntro && viewIntro.classList.contains('active')) {
+            proceedFromIntroToLogin(true);
+        }
+    }, 4500);
+}
+
+function proceedFromIntroToLogin(isAuto = false) {
+    if (introAutoTimer) {
+        clearTimeout(introAutoTimer);
+        introAutoTimer = null;
+    }
+
+    if (currentUser) {
+        switchView('user');
+        showToast(`Welcome back to Zmusic, ${currentUser.name}! 🎵`, 'success');
+    } else {
+        switchView('login');
+        if (isAuto) {
+            showToast('Welcome! Please sign in with your credentials to unlock Zmusic.', 'info');
+        } else {
+            showToast('Please sign in or use Demo login to unlock the app.', 'info');
+        }
+    }
+}
+
 function switchView(viewName) {
+    // Auth Guard: Require login for user library and admin panel
+    if ((viewName === 'user' || viewName === 'admin') && !currentUser) {
+        showToast('🔒 Please sign in to access Zmusic.', 'warning');
+        viewName = 'login';
+    }
+
     document.querySelectorAll('.page-view').forEach(view => view.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
 
@@ -387,6 +439,7 @@ function switchView(viewName) {
         const navIntro = document.getElementById('nav-intro');
         if (viewIntro) viewIntro.classList.add('active');
         if (navIntro) navIntro.classList.add('active');
+        initIntroAutoTimer();
     } else if (viewName === 'user') {
         const viewUser = document.getElementById('view-user');
         const navUser = document.getElementById('nav-user');
