@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zmusic - Dynamic Cloudinary Music Streaming</title>
+    <title>Zmusic - Premium Dynamic Music Streaming Platform</title>
 
     <!-- Meta Description for SEO -->
     <meta name="description"
-        content="Zmusic - A dynamic Spotify-like web app for streaming Cloudinary music with Supabase backend, search features, and admin CRUD controls.">
+        content="Zmusic - Premium music streaming platform with Cloudinary audio streaming, Supabase database sync, real-time search, and separate User & Admin portals.">
 
     <!-- Remixicon Icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
@@ -22,7 +22,284 @@
 
 <body>
 
-    <div class="app-container">
+    <!-- =========================================================
+         FULL-SCREEN INTRO & SEPARATE AUTHENTICATION PORTALS OVERLAY
+         ========================================================= -->
+    <div id="standalone-auth-wrapper" class="standalone-auth-wrapper active">
+        
+        <!-- 1. FULL-SCREEN INTRO / LANDING PAGE -->
+        <div class="auth-screen active" id="screen-intro">
+            <!-- Ambient Particle Glow Orbs -->
+            <div class="intro-fullscreen-bg">
+                <div class="glow-orb orb-1"></div>
+                <div class="glow-orb orb-2"></div>
+                <div class="glow-orb orb-3"></div>
+            </div>
+
+            <!-- Top Header Navigation -->
+            <nav class="intro-navbar">
+                <div class="brand">
+                    <div class="brand-logo">
+                        <i class="ri-pulse-fill"></i>
+                    </div>
+                    <span class="brand-name">Zmusic</span>
+                </div>
+                <div class="intro-nav-actions">
+                    <button class="btn-intro-outline" onclick="navigateToScreen('auth-select')">
+                        <i class="ri-user-3-line"></i> Sign In / Portal
+                    </button>
+                </div>
+            </nav>
+
+            <!-- Main Hero Visual & CTA -->
+            <div class="intro-hero-content">
+                <div class="hero-tag-pill">
+                    <i class="ri-sparkles-fill"></i> NEXT-GEN CLOUDINARY AUDIO PLATFORM
+                </div>
+                
+                <h1 class="hero-title-main">
+                    Feel the Rhythm of <br><span class="gradient-text">Infinite High-Fidelity Sound</span>
+                </h1>
+                
+                <p class="hero-subtitle-main">
+                    Stream high-definition Cloudinary audio tracks synced live with Supabase database. Real-time search, custom player engine, and full Admin library controls.
+                </p>
+
+                <!-- Primary CTA Button -->
+                <div class="hero-btn-group">
+                    <button class="btn-hero-launch" onclick="navigateToScreen('auth-select')">
+                        <span>Get Started Now</span>
+                        <i class="ri-arrow-right-line"></i>
+                    </button>
+                    <button class="btn-hero-secondary-demo" onclick="quickLoginDemo('user')">
+                        <i class="ri-play-circle-line"></i> Quick Demo Listener
+                    </button>
+                </div>
+
+                <!-- Animated Bouncing Equalizer Waves -->
+                <div class="intro-eq-visualizer">
+                    <div class="eq-column col-1"></div>
+                    <div class="eq-column col-2"></div>
+                    <div class="eq-column col-3"></div>
+                    <div class="eq-column col-4"></div>
+                    <div class="eq-column col-5"></div>
+                    <div class="eq-column col-6"></div>
+                    <div class="eq-column col-7"></div>
+                    <div class="eq-column col-8"></div>
+                    <div class="eq-column col-9"></div>
+                    <div class="eq-column col-10"></div>
+                </div>
+            </div>
+
+            <!-- Bottom Stats Feature Banner -->
+            <div class="intro-footer-stats">
+                <div class="stat-item">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Cloudinary MP3 Audio</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number">⚡ Supabase DB</span>
+                    <span class="stat-label">Dynamic Live Sync</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number">🛠️ Admin CRUD</span>
+                    <span class="stat-label">Separate Portal Login</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. AUTHENTICATION SELECTION PAGE (User Login vs Admin Login) -->
+        <div class="auth-screen" id="screen-auth-select">
+            <button class="btn-back-intro" onclick="navigateToScreen('intro')">
+                <i class="ri-arrow-left-line"></i> Back to Intro Home
+            </button>
+
+            <div class="auth-select-container">
+                <div class="auth-select-header">
+                    <div class="auth-brand-logo">
+                        <i class="ri-pulse-fill"></i>
+                    </div>
+                    <h2>Welcome to Zmusic</h2>
+                    <p>Select your entry portal to access the application</p>
+                </div>
+
+                <div class="auth-portals-grid">
+                    <!-- User Login Portal Card -->
+                    <div class="portal-card user-portal" onclick="navigateToScreen('user-login')">
+                        <div class="portal-header-icon">
+                            <i class="ri-headphone-fill"></i>
+                        </div>
+                        <span class="portal-badge badge-user">LISTENER PORTAL</span>
+                        <h3>User Login</h3>
+                        <p>Sign in to stream Cloudinary tracks, search music library, and access player controls.</p>
+                        <button class="btn-portal btn-portal-user">
+                            <span>Proceed to User Login</span>
+                            <i class="ri-arrow-right-line"></i>
+                        </button>
+                    </div>
+
+                    <!-- Admin Login Portal Card -->
+                    <div class="portal-card admin-portal" onclick="navigateToScreen('admin-login')">
+                        <div class="portal-header-icon">
+                            <i class="ri-shield-user-fill"></i>
+                        </div>
+                        <span class="portal-badge badge-admin">ADMIN PORTAL</span>
+                        <h3>Admin Login</h3>
+                        <p>Authenticate as Administrator to add, edit, upload, and delete tracks in Supabase DB.</p>
+                        <button class="btn-portal btn-portal-admin">
+                            <span>Proceed to Admin Login</span>
+                            <i class="ri-arrow-right-line"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. DEDICATED USER LOGIN & SIGNUP SCREEN -->
+        <div class="auth-screen" id="screen-user-login">
+            <button class="btn-back-intro" onclick="navigateToScreen('auth-select')">
+                <i class="ri-arrow-left-line"></i> Back to Portal Selection
+            </button>
+
+            <div class="auth-card-wrapper">
+                <div class="auth-card">
+                    <div class="auth-header">
+                        <div class="auth-brand-logo user-logo-bg">
+                            <i class="ri-headphone-fill"></i>
+                        </div>
+                        <h2>User Authentication</h2>
+                        <p>Sign in to your Listener account to unlock music streaming</p>
+                    </div>
+
+                    <!-- User Auth Mode Tabs -->
+                    <div class="auth-tabs">
+                        <button type="button" class="auth-tab active" id="tab-user-signin"
+                            onclick="switchUserAuthTab('signin')">Sign In</button>
+                        <button type="button" class="auth-tab" id="tab-user-signup"
+                            onclick="switchUserAuthTab('signup')">Sign Up</button>
+                    </div>
+
+                    <!-- User Auth Form -->
+                    <form id="user-auth-form" onsubmit="handleUserAuthSubmit(event)">
+                        <div class="form-group" id="group-user-name" style="display: none;">
+                            <label class="form-label" for="user-auth-name">Full Name</label>
+                            <div class="input-with-icon">
+                                <i class="ri-user-line input-icon"></i>
+                                <input type="text" id="user-auth-name" class="form-input" placeholder="e.g. Manoj Kumar">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="user-auth-email">Email Address *</label>
+                            <div class="input-with-icon">
+                                <i class="ri-mail-line input-icon"></i>
+                                <input type="email" id="user-auth-email" class="form-input"
+                                    placeholder="user@zmusic.com" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="user-auth-password">Password *</label>
+                            <div class="input-with-icon">
+                                <i class="ri-lock-2-line input-icon"></i>
+                                <input type="password" id="user-auth-password" class="form-input" placeholder="••••••••"
+                                    required>
+                                <button type="button" class="toggle-pwd-btn"
+                                    onclick="togglePasswordVisibility('user-auth-password', this)">
+                                    <i class="ri-eye-off-line"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-options">
+                            <label class="form-remember">
+                                <input type="checkbox" id="user-remember" checked>
+                                <span>Remember me</span>
+                            </label>
+                            <a href="javascript:void(0)"
+                                onclick="showToast('Password reset email dispatched.', 'info')">Forgot Password?</a>
+                        </div>
+
+                        <button type="submit" class="btn-primary btn-user-submit" id="btn-user-submit">
+                            <i class="ri-login-circle-line"></i> Sign In to Music Dashboard
+                        </button>
+                    </form>
+
+                    <div class="quick-demo-divider">
+                        <span>OR USE QUICK DEMO USER</span>
+                    </div>
+
+                    <button type="button" class="btn-demo btn-demo-user-full" onclick="quickLoginDemo('user')">
+                        <i class="ri-user-smile-line"></i> 1-Click Instant Demo User
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. DEDICATED ADMIN LOGIN SCREEN -->
+        <div class="auth-screen" id="screen-admin-login">
+            <button class="btn-back-intro" onclick="navigateToScreen('auth-select')">
+                <i class="ri-arrow-left-line"></i> Back to Portal Selection
+            </button>
+
+            <div class="auth-card-wrapper">
+                <div class="auth-card admin-card-style">
+                    <div class="auth-header">
+                        <div class="auth-brand-logo admin-logo-bg">
+                            <i class="ri-shield-user-fill"></i>
+                        </div>
+                        <h2>Admin Portal Security</h2>
+                        <p>Authenticate with administrative credentials to access song CRUD management</p>
+                    </div>
+
+                    <!-- Admin Auth Form -->
+                    <form id="admin-auth-form" onsubmit="handleAdminAuthSubmit(event)">
+                        <div class="form-group">
+                            <label class="form-label" for="admin-auth-email">Admin Email *</label>
+                            <div class="input-with-icon">
+                                <i class="ri-mail-line input-icon"></i>
+                                <input type="email" id="admin-auth-email" class="form-input"
+                                    placeholder="admin@zmusic.com" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="admin-auth-password">Admin Security Passcode *</label>
+                            <div class="input-with-icon">
+                                <i class="ri-key-2-line input-icon"></i>
+                                <input type="password" id="admin-auth-password" class="form-input" placeholder="••••••••"
+                                    required>
+                                <button type="button" class="toggle-pwd-btn"
+                                    onclick="togglePasswordVisibility('admin-auth-password', this)">
+                                    <i class="ri-eye-off-line"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary btn-admin-submit" id="btn-admin-submit">
+                            <i class="ri-shield-check-line"></i> Authenticate Admin Dashboard
+                        </button>
+                    </form>
+
+                    <div class="quick-demo-divider">
+                        <span>OR USE QUICK DEMO ADMIN</span>
+                    </div>
+
+                    <button type="button" class="btn-demo btn-demo-admin-full" onclick="quickLoginDemo('admin')">
+                        <i class="ri-shield-flash-line"></i> 1-Click Instant Demo Admin
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- =========================================================
+         MAIN APPLICATION DASHBOARD (UNLOCKED AFTER AUTHENTICATION)
+         ========================================================= -->
+    <div class="app-container" id="app-dashboard-wrapper">
         <!-- Sidebar Navigation -->
         <aside class="sidebar" id="sidebar">
             <div class="brand">
@@ -33,32 +310,9 @@
             </div>
 
             <div class="nav-section">
-                <div class="nav-title">Menu</div>
-                <ul class="nav-list">
-                    <li class="nav-item active" id="nav-intro">
-                        <button onclick="switchView('intro')">
-                            <i class="ri-home-4-line"></i>
-                            <span>Home</span>
-                        </button>
-                    </li>
-                    <li class="nav-item" id="nav-user">
-                        <button onclick="switchView('user')">
-                            <i class="ri-disc-line"></i>
-                            <span>Music Library</span>
-                        </button>
-                    </li>
-                    <li class="nav-item" id="nav-admin">
-                        <button onclick="switchView('admin')">
-                            <i class="ri-dashboard-3-line"></i>
-                            <span>Admin Panel</span>
-                        </button>
-                    </li>
-                    <li class="nav-item" id="nav-login">
-                        <button onclick="switchView('login')">
-                            <i class="ri-user-3-line"></i>
-                            <span id="nav-login-label">Login / Account</span>
-                        </button>
-                    </li>
+                <div class="nav-title" id="nav-section-title">Menu</div>
+                <ul class="nav-list" id="sidebar-nav-list">
+                    <!-- Dynamic Nav Items via app.js -->
                 </ul>
             </div>
 
@@ -97,109 +351,15 @@
                         <i class="ri-key-2-line"></i>
                     </button>
 
-                    <!-- Header User Profile / Login Pill -->
+                    <!-- Header User Profile & Logout -->
                     <div class="user-profile-container" id="header-user-container">
                         <!-- Dynamic via app.js -->
                     </div>
                 </div>
             </header>
 
-            <!-- ANIMATED INTRO LANDING PAGE VIEW -->
-            <section class="page-view active" id="view-intro">
-                <div class="intro-animated-container">
-                    <!-- Animated Ambient Background Glow Rings -->
-                    <div class="intro-bg-glow glow-1"></div>
-                    <div class="intro-bg-glow glow-2"></div>
-
-                    <!-- Glowing Animated Brand Logo -->
-                    <div class="intro-brand-animated">
-                        <div class="intro-logo-ring">
-                            <i class="ri-pulse-fill"></i>
-                        </div>
-                        <span class="intro-brand-title">Zmusic</span>
-                    </div>
-
-                    <!-- Main Animated Title & Subtitle -->
-                    <h1 class="intro-main-title">
-                        Experience Endless Sound with <span class="gradient-text">Zmusic</span>
-                    </h1>
-                    <p class="intro-main-subtitle">
-                        Stream high-quality Cloudinary audio tracks synced in real-time with your Supabase database.
-                        Full audio controls, search, and integrated Admin management.
-                    </p>
-
-                    <!-- Dynamic Soundwave Equalizer Animation -->
-                    <div class="intro-equalizer-wrapper">
-                        <div class="intro-eq-bar bar-1"></div>
-                        <div class="intro-eq-bar bar-2"></div>
-                        <div class="intro-eq-bar bar-3"></div>
-                        <div class="intro-eq-bar bar-4"></div>
-                        <div class="intro-eq-bar bar-5"></div>
-                        <div class="intro-eq-bar bar-6"></div>
-                        <div class="intro-eq-bar bar-7"></div>
-                        <div class="intro-eq-bar bar-8"></div>
-                    </div>
-
-                    <!-- CTA Action Button to Proceed to Login -->
-                    <div class="intro-action-box">
-                        <button class="btn-intro-enter" onclick="proceedFromIntroToLogin()">
-                            <span>Proceed to Login</span>
-                            <i class="ri-arrow-right-line"></i>
-                        </button>
-                    </div>
-
-                    <!-- Auto Transition Timer Indicator -->
-                    <div class="intro-timer-bar-wrapper">
-                        <div class="intro-timer-bar-fill" id="intro-timer-fill"></div>
-                    </div>
-                    <span class="intro-timer-label">Auto-proceeding to Login page...</span>
-                </div>
-
-                <!-- Feature Highlights Cards -->
-                <div class="intro-features-section" style="margin-top: 40px;">
-                    <h2 class="intro-section-title">Platform Highlights</h2>
-                    <div class="intro-features-grid">
-                        <div class="feature-card">
-                            <div class="feature-icon" style="background: rgba(99, 102, 241, 0.15); color: #6366f1;">
-                                <i class="ri-headphone-fill"></i>
-                            </div>
-                            <h3>Cloudinary Audio Streaming</h3>
-                            <p>Plays MP3 audio links smoothly with play/pause, scrubbable progress bar, volume slider,
-                                and track controls.</p>
-                        </div>
-
-                        <div class="feature-card">
-                            <div class="feature-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
-                                <i class="ri-database-2-fill"></i>
-                            </div>
-                            <h3>Supabase Database Sync</h3>
-                            <p>Zero hardcoded tracks! Every song details, cover art, and audio link are dynamically
-                                fetched from your database.</p>
-                        </div>
-
-                        <div class="feature-card">
-                            <div class="feature-icon" style="background: rgba(236, 72, 153, 0.15); color: #ec4899;">
-                                <i class="ri-dashboard-fill"></i>
-                            </div>
-                            <h3>Admin CRUD Management</h3>
-                            <p>Add new tracks with live image preview, edit existing details, and delete songs with
-                                automatic real-time updates.</p>
-                        </div>
-
-                        <div class="feature-card">
-                            <div class="feature-icon" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4;">
-                                <i class="ri-search-eye-line"></i>
-                            </div>
-                            <h3>Instant Search & Filter</h3>
-                            <p>Find your favorite tracks in seconds by filtering song titles, artist names, or album
-                                titles in real time.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             <!-- USER SIDE VIEW: Music Player & Song Library -->
-            <section class="page-view" id="view-user">
+            <section class="page-view active" id="view-user">
                 <div class="hero-banner">
                     <div class="hero-text">
                         <h1>Stream High-Quality Music on Zmusic</h1>
@@ -317,97 +477,11 @@
                     </div>
                 </div>
             </section>
-
-            <!-- LOGIN & USER ACCOUNT VIEW -->
-            <section class="page-view" id="view-login">
-                <div class="auth-view-container">
-                    <div class="auth-card">
-                        <div class="auth-header">
-                            <div class="auth-brand-logo">
-                                <i class="ri-pulse-fill"></i>
-                            </div>
-                            <h2 class="auth-title" id="auth-title-text">Welcome to Zmusic</h2>
-                            <p class="auth-subtitle" id="auth-subtitle-text">Sign in to your account to unlock full
-                                streaming experience</p>
-                        </div>
-
-                        <!-- Auth Mode Tabs -->
-                        <div class="auth-tabs">
-                            <button type="button" class="auth-tab active" id="tab-signin"
-                                onclick="switchAuthTab('signin')">Sign In</button>
-                            <button type="button" class="auth-tab" id="tab-signup"
-                                onclick="switchAuthTab('signup')">Sign Up</button>
-                        </div>
-
-                        <!-- Auth Form -->
-                        <form id="auth-form" onsubmit="handleAuthSubmit(event)">
-                            <div class="form-group" id="group-name" style="display: none;">
-                                <label class="form-label" for="auth-name">Full Name</label>
-                                <div class="input-with-icon">
-                                    <i class="ri-user-line input-icon"></i>
-                                    <input type="text" id="auth-name" class="form-input" placeholder="e.g. Manoj Kumar">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label" for="auth-email">Email Address *</label>
-                                <div class="input-with-icon">
-                                    <i class="ri-mail-line input-icon"></i>
-                                    <input type="email" id="auth-email" class="form-input"
-                                        placeholder="name@example.com" required>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label" for="auth-password">Password *</label>
-                                <div class="input-with-icon">
-                                    <i class="ri-lock-2-line input-icon"></i>
-                                    <input type="password" id="auth-password" class="form-input" placeholder="••••••••"
-                                        required>
-                                    <button type="button" class="toggle-pwd-btn"
-                                        onclick="togglePasswordVisibility('auth-password', this)">
-                                        <i class="ri-eye-off-line"></i>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="form-options" id="auth-options">
-                                <label class="form-remember">
-                                    <input type="checkbox" id="auth-remember" checked>
-                                    <span>Remember me</span>
-                                </label>
-                                <a href="javascript:void(0)"
-                                    onclick="showToast('Password reset link will be sent to your email.', 'info')"
-                                    style="color: var(--accent-primary); text-decoration: none;">Forgot Password?</a>
-                            </div>
-
-                            <button type="submit" class="btn-primary" id="btn-auth-submit"
-                                style="width: 100%; padding: 14px; font-size: 1rem;">
-                                <i class="ri-login-circle-line"></i> Sign In to Zmusic
-                            </button>
-                        </form>
-
-                        <!-- Quick Demo Logins -->
-                        <div class="demo-logins">
-                            <div class="demo-title">Quick Demo Login</div>
-                            <div class="demo-btn-group">
-                                <button type="button" class="btn-demo" onclick="quickLoginDemo('user')">
-                                    <i class="ri-user-smile-line" style="color: var(--accent-cyan);"></i> Demo User
-                                </button>
-                                <button type="button" class="btn-demo" onclick="quickLoginDemo('admin')">
-                                    <i class="ri-shield-user-line" style="color: var(--accent-secondary);"></i> Demo
-                                    Admin
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
         </main>
     </div>
 
     <!-- BOTTOM FLOATING AUDIO PLAYER BAR -->
-    <footer class="player-bar">
+    <footer class="player-bar" id="player-bar-container">
         <!-- Left: Track Details -->
         <div class="player-track-info">
             <img id="player-cover-img" class="player-cover"
