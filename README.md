@@ -1,23 +1,25 @@
-# Audionix - Dynamic Cloudinary Music Streaming Web App
+# Zmusic - Dynamic Cloudinary Music Streaming Web App
 
-A clean, modern Spotify-like music streaming website built with **HTML5, CSS3, Vanilla JavaScript**, and **Supabase Database**.
+A clean, modern Spotify-like music streaming website built with **HTML5, CSS3, Vanilla JavaScript**, **Supabase Database**, and **User Authentication**.
 
 ---
 
 ## 🌟 Key Features
 
-### 🎧 User Side
-1. **Dynamic Song Streaming**: Automatically fetches and renders songs from your Supabase database (`songs` table).
-2. **Track Info & Covers**: Displays song title, artist name, album title, and cover artwork.
-3. **Cloudinary Audio Player**: Plays MP3 files directly from Cloudinary audio URLs.
-4. **Interactive Controls**:
+### 🎧 User Side & Authentication
+1. **Zmusic Auth & Login Page**: Full Login and Sign Up screen with password toggles, quick demo user/admin buttons, and Supabase / local session handling.
+2. **User Profile Header**: Displays user avatar, display name, VIP/Admin role badge, and one-click logout.
+3. **Dynamic Song Streaming**: Automatically fetches and renders songs from your Supabase database (`songs` table).
+4. **Track Info & Covers**: Displays song title, artist name, album title, and cover artwork.
+5. **Cloudinary Audio Player**: Plays MP3 files directly from Cloudinary audio URLs.
+6. **Interactive Controls**:
    - Play/Pause with glowing pulse animation.
    - Next & Previous track navigation.
    - Scrubbable progress bar with real-time current time and total track duration.
    - Volume control slider & mute toggle.
    - Shuffle queue & Loop/Repeat track toggles.
-5. **Real-time Live Search**: Filter songs instantly by title, artist, or album.
-6. **Responsive Dark UI**: Sleek glassmorphism dark theme, desktop sidebar, and mobile responsive drawer.
+7. **Real-time Live Search**: Filter songs instantly by title, artist, or album.
+8. **Responsive Dark UI**: Sleek glassmorphism dark theme, desktop sidebar, and mobile responsive drawer.
 
 ### 🛠️ Admin Side
 1. **Add Song Form**:

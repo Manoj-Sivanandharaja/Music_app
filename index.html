@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audionix - Dynamic Cloudinary Music Streaming</title>
+    <title>Zmusic - Dynamic Cloudinary Music Streaming</title>
     
     <!-- Meta Description for SEO -->
-    <meta name="description" content="A dynamic Spotify-like web app for streaming Cloudinary music with Supabase backend, search features, and admin CRUD controls.">
+    <meta name="description" content="Zmusic - A dynamic Spotify-like web app for streaming Cloudinary music with Supabase backend, search features, and admin CRUD controls.">
     
     <!-- Remixicon Icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
@@ -26,7 +26,7 @@
                 <div class="brand-logo">
                     <i class="ri-pulse-fill"></i>
                 </div>
-                <span class="brand-name">Audionix</span>
+                <span class="brand-name">Zmusic</span>
             </div>
 
             <div class="nav-section">
@@ -42,6 +42,12 @@
                         <button onclick="switchView('admin')">
                             <i class="ri-dashboard-3-line"></i>
                             <span>Admin Panel</span>
+                        </button>
+                    </li>
+                    <li class="nav-item" id="nav-login">
+                        <button onclick="switchView('login')">
+                            <i class="ri-user-3-line"></i>
+                            <span id="nav-login-label">Login / Account</span>
                         </button>
                     </li>
                 </ul>
@@ -86,6 +92,11 @@
                     <button class="btn-icon" title="Database Settings" onclick="openModal('modal-config')">
                         <i class="ri-key-2-line"></i>
                     </button>
+                    
+                    <!-- Header User Profile / Login Pill -->
+                    <div class="user-profile-container" id="header-user-container">
+                        <!-- Dynamic via app.js -->
+                    </div>
                 </div>
             </header>
 
@@ -93,7 +104,7 @@
             <section class="page-view active" id="view-user">
                 <div class="hero-banner">
                     <div class="hero-text">
-                        <h1>Stream High-Quality Music</h1>
+                        <h1>Stream High-Quality Music on Zmusic</h1>
                         <p>Explore dynamic Cloudinary audio tracks directly synced with your Supabase database.</p>
                     </div>
                 </div>
@@ -208,6 +219,82 @@
                                     <!-- Dynamic Rows -->
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LOGIN & USER ACCOUNT VIEW -->
+            <section class="page-view" id="view-login">
+                <div class="auth-view-container">
+                    <div class="auth-card">
+                        <div class="auth-header">
+                            <div class="auth-brand-logo">
+                                <i class="ri-pulse-fill"></i>
+                            </div>
+                            <h2 class="auth-title" id="auth-title-text">Welcome to Zmusic</h2>
+                            <p class="auth-subtitle" id="auth-subtitle-text">Sign in to your account to unlock full streaming experience</p>
+                        </div>
+
+                        <!-- Auth Mode Tabs -->
+                        <div class="auth-tabs">
+                            <button type="button" class="auth-tab active" id="tab-signin" onclick="switchAuthTab('signin')">Sign In</button>
+                            <button type="button" class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">Sign Up</button>
+                        </div>
+
+                        <!-- Auth Form -->
+                        <form id="auth-form" onsubmit="handleAuthSubmit(event)">
+                            <div class="form-group" id="group-name" style="display: none;">
+                                <label class="form-label" for="auth-name">Full Name</label>
+                                <div class="input-with-icon">
+                                    <i class="ri-user-line input-icon"></i>
+                                    <input type="text" id="auth-name" class="form-input" placeholder="e.g. Manoj Kumar">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="auth-email">Email Address *</label>
+                                <div class="input-with-icon">
+                                    <i class="ri-mail-line input-icon"></i>
+                                    <input type="email" id="auth-email" class="form-input" placeholder="name@example.com" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="auth-password">Password *</label>
+                                <div class="input-with-icon">
+                                    <i class="ri-lock-2-line input-icon"></i>
+                                    <input type="password" id="auth-password" class="form-input" placeholder="••••••••" required>
+                                    <button type="button" class="toggle-pwd-btn" onclick="togglePasswordVisibility('auth-password', this)">
+                                        <i class="ri-eye-off-line"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="form-options" id="auth-options">
+                                <label class="form-remember">
+                                    <input type="checkbox" id="auth-remember" checked>
+                                    <span>Remember me</span>
+                                </label>
+                                <a href="javascript:void(0)" onclick="showToast('Password reset link will be sent to your email.', 'info')" style="color: var(--accent-primary); text-decoration: none;">Forgot Password?</a>
+                            </div>
+
+                            <button type="submit" class="btn-primary" id="btn-auth-submit" style="width: 100%; padding: 14px; font-size: 1rem;">
+                                <i class="ri-login-circle-line"></i> Sign In to Zmusic
+                            </button>
+                        </form>
+
+                        <!-- Quick Demo Logins -->
+                        <div class="demo-logins">
+                            <div class="demo-title">Quick Demo Login</div>
+                            <div class="demo-btn-group">
+                                <button type="button" class="btn-demo" onclick="quickLoginDemo('user')">
+                                    <i class="ri-user-smile-line" style="color: var(--accent-cyan);"></i> Demo User
+                                </button>
+                                <button type="button" class="btn-demo" onclick="quickLoginDemo('admin')">
+                                    <i class="ri-shield-user-line" style="color: var(--accent-secondary);"></i> Demo Admin
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

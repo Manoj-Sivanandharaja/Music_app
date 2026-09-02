@@ -1,5 +1,5 @@
 /* ==========================================
-   STYLING & SYSTEM DESIGN - AUDIONIX MUSIC
+   STYLING & SYSTEM DESIGN - ZMUSIC WEB APP
    ========================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
@@ -1128,3 +1128,294 @@ body {
         display: none;
     }
 }
+
+/* ==========================================
+   USER PROFILE PILL & LOGIN STYLES
+   ========================================== */
+
+.user-profile-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    padding: 6px 14px 6px 8px;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.user-pill:hover {
+    border-color: var(--border-highlight);
+    background: var(--bg-surface-hover);
+    transform: translateY(-1px);
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--accent-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.user-name {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.user-role-badge {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--accent-cyan);
+    text-transform: uppercase;
+}
+
+.btn-header-login {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    background: var(--accent-gradient);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    border: none;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    box-shadow: var(--shadow-glow);
+    transition: all 0.2s ease;
+}
+
+.btn-header-login:hover {
+    background: var(--accent-gradient-hover);
+    transform: translateY(-2px);
+}
+
+/* ==========================================
+   LOGIN PAGE VIEW STYLING
+   ========================================== */
+
+.auth-view-container {
+    min-height: calc(100vh - var(--player-height) - 100px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 440px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 36px 30px;
+    box-shadow: var(--shadow-card), 0 0 40px rgba(99, 102, 241, 0.15);
+    backdrop-filter: blur(16px);
+    animation: fadeInScale 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--accent-gradient);
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.auth-brand-logo {
+    width: 54px;
+    height: 54px;
+    background: var(--accent-gradient);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    color: #fff;
+    margin: 0 auto 16px auto;
+    box-shadow: var(--shadow-glow);
+}
+
+.auth-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: -0.5px;
+}
+
+.auth-subtitle {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-top: 6px;
+}
+
+.auth-tabs {
+    display: flex;
+    background: var(--bg-base);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 4px;
+    margin-bottom: 24px;
+}
+
+.auth-tab {
+    flex: 1;
+    padding: 10px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.auth-tab.active {
+    color: #fff;
+    background: var(--bg-surface-hover);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon i.input-icon {
+    position: absolute;
+    left: 14px;
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    pointer-events: none;
+}
+
+.input-with-icon .form-input {
+    padding-left: 42px;
+    padding-right: 42px;
+}
+
+.toggle-pwd-btn {
+    position: absolute;
+    right: 12px;
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.toggle-pwd-btn:hover {
+    color: var(--text-main);
+}
+
+.form-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.82rem;
+    margin-bottom: 24px;
+    color: var(--text-muted);
+}
+
+.form-remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.form-remember input[type="checkbox"] {
+    accent-color: var(--accent-primary);
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.demo-logins {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.demo-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+}
+
+.demo-btn-group {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-demo {
+    flex: 1;
+    padding: 10px 12px;
+    background: var(--bg-base);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    font-weight: 600;
+    font-size: 0.8rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-demo:hover {
+    border-color: var(--accent-primary);
+    background: var(--bg-surface-hover);
+    color: #fff;
+}
+

@@ -1,10 +1,11 @@
 /* ==========================================
-   AUDIONIX CORE JAVASCRIPT APP LOGIC
+   ZMUSIC CORE JAVASCRIPT APP LOGIC
    ========================================== */
 
 // --- SUPABASE CONFIGURATION ---
 const SUPABASE_URL = "https://gitrzfyqtazkbiznrcsb.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_A13cHt-VHwIjoaINvrQN2g_YQsYREjW";
+
 // --- GLOBAL STATE ---
 let supabaseClient = null;
 let songsList = [];
@@ -15,6 +16,10 @@ let isShuffle = false;
 let isRepeat = false;
 let isMuted = false;
 let previousVolume = 0.8;
+
+// User & Auth State
+let currentUser = null; // { name, email, role: 'user'|'admin'|'guest', id }
+let currentAuthTab = 'signin';
 
 // Fallback Sample Songs for Instant Out-of-the-Box Preview
 const DEMO_FALLBACK_SONGS = [
@@ -53,6 +58,7 @@ const audioPlayer = document.getElementById('audio-player');
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
     initSupabase();
+    initUserSession();
     setupAudioEventListeners();
     fetchSongsFromSupabase();
 });
@@ -150,21 +156,252 @@ async function fetchSongsFromSupabase() {
     renderAdminSongsTable(songsList);
 }
 
+// --- USER AUTHENTICATION & SESSION MANAGEMENT ---
+
+function initUserSession() {
+    // Check saved user session in localStorage
+    const savedUser = localStorage.getItem('zmusic_user') || localStorage.getItem('audionix_user');
+    if (savedUser) {
+        try {
+            currentUser = JSON.parse(savedUser);
+        } catch (e) {
+            currentUser = null;
+        }
+    }
+
+    // Check Supabase Auth Session if client exists
+    if (supabaseClient && supabaseClient.auth) {
+        supabaseClient.auth.getSession().then(({ data: { session } }) => {
+            if (session && session.user) {
+                currentUser = {
+                    name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
+                    email: session.user.email,
+                    role: session.user.user_metadata?.role || 'user',
+                    id: session.user.id
+                };
+                localStorage.setItem('zmusic_user', JSON.stringify(currentUser));
+                renderUserProfileHeader();
+            }
+        }).catch(err => console.log('Supabase Auth Session check:', err));
+    }
+
+    renderUserProfileHeader();
+}
+
+function renderUserProfileHeader() {
+    const container = document.getElementById('header-user-container');
+    const navLoginLabel = document.getElementById('nav-login-label');
+
+    if (!container) return;
+
+    if (currentUser) {
+        const initial = (currentUser.name || currentUser.email || 'U').charAt(0).toUpperCase();
+        const roleLabel = currentUser.role === 'admin' ? 'Admin' : 'VIP Member';
+
+        container.innerHTML = `
+            <div class="user-pill" title="Logged in as ${currentUser.email}">
+                <div class="user-avatar">${initial}</div>
+                <div class="user-info">
+                    <span class="user-name">${currentUser.name || currentUser.email.split('@')[0]}</span>
+                    <span class="user-role-badge">${roleLabel}</span>
+                </div>
+            </div>
+            <button class="btn-icon" title="Logout" onclick="handleLogout()" style="color: #ef4444; border-color: rgba(239,68,68,0.2);">
+                <i class="ri-logout-box-r-line"></i>
+            </button>
+        `;
+
+        if (navLoginLabel) navLoginLabel.textContent = 'My Account';
+    } else {
+        container.innerHTML = `
+            <button class="btn-header-login" onclick="switchView('login')">
+                <i class="ri-user-3-line"></i> Sign In
+            </button>
+        `;
+
+        if (navLoginLabel) navLoginLabel.textContent = 'Login / Account';
+    }
+}
+
+function switchAuthTab(tab) {
+    currentAuthTab = tab;
+    const tabSignin = document.getElementById('tab-signin');
+    const tabSignup = document.getElementById('tab-signup');
+    const groupName = document.getElementById('group-name');
+    const authTitle = document.getElementById('auth-title-text');
+    const authSubtitle = document.getElementById('auth-subtitle-text');
+    const btnSubmit = document.getElementById('btn-auth-submit');
+    const authOptions = document.getElementById('auth-options');
+
+    if (!tabSignin || !tabSignup) return;
+
+    if (tab === 'signin') {
+        tabSignin.classList.add('active');
+        tabSignup.classList.remove('active');
+        if (groupName) groupName.style.display = 'none';
+        if (authTitle) authTitle.textContent = 'Welcome to Zmusic';
+        if (authSubtitle) authSubtitle.textContent = 'Sign in to your account to unlock full streaming experience';
+        if (btnSubmit) btnSubmit.innerHTML = '<i class="ri-login-circle-line"></i> Sign In to Zmusic';
+        if (authOptions) authOptions.style.display = 'flex';
+    } else {
+        tabSignin.classList.remove('active');
+        tabSignup.classList.add('active');
+        if (groupName) groupName.style.display = 'block';
+        if (authTitle) authTitle.textContent = 'Create your Zmusic Account';
+        if (authSubtitle) authSubtitle.textContent = 'Join millions streaming high-quality music anywhere';
+        if (btnSubmit) btnSubmit.innerHTML = '<i class="ri-user-add-line"></i> Create Account';
+        if (authOptions) authOptions.style.display = 'none';
+    }
+}
+
+function togglePasswordVisibility(inputId, btn) {
+    const input = document.getElementById(inputId);
+    const icon = btn.querySelector('i');
+    if (!input || !icon) return;
+
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'ri-eye-line';
+    } else {
+        input.type = 'password';
+        icon.className = 'ri-eye-off-line';
+    }
+}
+
+async function handleAuthSubmit(e) {
+    e.preventDefault();
+    const email = document.getElementById('auth-email').value.trim();
+    const password = document.getElementById('auth-password').value.trim();
+    const nameInput = document.getElementById('auth-name');
+    const name = nameInput ? nameInput.value.trim() : '';
+
+    if (!email || !password) {
+        showToast('Please enter your email and password.', 'error');
+        return;
+    }
+
+    if (currentAuthTab === 'signup' && !name) {
+        showToast('Please enter your full name.', 'error');
+        return;
+    }
+
+    showToast(currentAuthTab === 'signin' ? 'Authenticating...' : 'Creating account...', 'info');
+
+    // Attempt Supabase Auth if initialized
+    if (supabaseClient && supabaseClient.auth) {
+        try {
+            if (currentAuthTab === 'signin') {
+                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                if (error) throw error;
+                currentUser = {
+                    name: data.user.user_metadata?.full_name || email.split('@')[0],
+                    email: data.user.email,
+                    role: data.user.user_metadata?.role || 'user',
+                    id: data.user.id
+                };
+            } else {
+                const { data, error } = await supabaseClient.auth.signUp({
+                    email,
+                    password,
+                    options: { data: { full_name: name, role: 'user' } }
+                });
+                if (error) throw error;
+                currentUser = {
+                    name: name || email.split('@')[0],
+                    email,
+                    role: 'user',
+                    id: data.user?.id || 'sb-' + Date.now()
+                };
+            }
+        } catch (err) {
+            console.warn('Supabase Auth warning, fallback to session state:', err.message);
+            currentUser = {
+                name: name || email.split('@')[0],
+                email: email,
+                role: email.includes('admin') ? 'admin' : 'user',
+                id: 'local-' + Date.now()
+            };
+        }
+    } else {
+        // Fallback Local Auth
+        currentUser = {
+            name: name || email.split('@')[0],
+            email: email,
+            role: email.includes('admin') ? 'admin' : 'user',
+            id: 'local-' + Date.now()
+        };
+    }
+
+    localStorage.setItem('zmusic_user', JSON.stringify(currentUser));
+    renderUserProfileHeader();
+    showToast(`Welcome to Zmusic, ${currentUser.name}! 🎵`, 'success');
+
+    // Reset Form
+    document.getElementById('auth-form').reset();
+    switchView('user');
+}
+
+function quickLoginDemo(role) {
+    if (role === 'admin') {
+        currentUser = {
+            name: 'Zmusic Admin',
+            email: 'admin@zmusic.com',
+            role: 'admin',
+            id: 'demo-admin-123'
+        };
+        showToast('Logged in as Demo Admin 🛡️', 'success');
+    } else {
+        currentUser = {
+            name: 'Manoj Kumar',
+            email: 'manoj@zmusic.com',
+            role: 'user',
+            id: 'demo-user-456'
+        };
+        showToast('Logged in as Demo User 🎧', 'success');
+    }
+
+    localStorage.setItem('zmusic_user', JSON.stringify(currentUser));
+    renderUserProfileHeader();
+    switchView('user');
+}
+
+async function handleLogout() {
+    if (supabaseClient && supabaseClient.auth) {
+        try {
+            await supabaseClient.auth.signOut();
+        } catch (e) {}
+    }
+    currentUser = null;
+    localStorage.removeItem('zmusic_user');
+    renderUserProfileHeader();
+    showToast('You have been logged out of Zmusic.', 'info');
+}
+
 // --- VIEW NAVIGATION & SEARCH ---
 function switchView(viewName) {
     document.querySelectorAll('.page-view').forEach(view => view.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
 
     if (viewName === 'user') {
-        document.getElementById('view-user').classList.add('active');
-        document.getElementById('nav-user').classList.add('active');
+        const viewUser = document.getElementById('view-user');
+        const navUser = document.getElementById('nav-user');
+        if (viewUser) viewUser.classList.add('active');
+        if (navUser) navUser.classList.add('active');
     } else if (viewName === 'admin') {
-        document.getElementById('view-admin').classList.add('active');
-        document.getElementById('nav-admin').classList.add('active');
+        const viewAdmin = document.getElementById('view-admin');
+        const navAdmin = document.getElementById('nav-admin');
+        if (viewAdmin) viewAdmin.classList.add('active');
+        if (navAdmin) navAdmin.classList.add('active');
+    } else if (viewName === 'login') {
+        const viewLogin = document.getElementById('view-login');
+        const navLogin = document.getElementById('nav-login');
+        if (viewLogin) viewLogin.classList.add('active');
+        if (navLogin) navLogin.classList.add('active');
     }
 
     // Close mobile sidebar if open
-    document.getElementById('sidebar').classList.remove('open');
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar) sidebar.classList.remove('open');
 }
 
 function toggleSidebar() {
