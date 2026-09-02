@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zmusic - Dynamic Cloudinary Music Streaming</title>
-    
+
     <!-- Meta Description for SEO -->
-    <meta name="description" content="Zmusic - A dynamic Spotify-like web app for streaming Cloudinary music with Supabase backend, search features, and admin CRUD controls.">
-    
+    <meta name="description"
+        content="Zmusic - A dynamic Spotify-like web app for streaming Cloudinary music with Supabase backend, search features, and admin CRUD controls.">
+
     <!-- Remixicon Icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
-    
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="styles.css">
-    
+
     <!-- Supabase JS Client SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
+
 <body>
 
     <div class="app-container">
@@ -81,13 +84,8 @@
                     </button>
                     <div class="search-box">
                         <i class="ri-search-line"></i>
-                        <input 
-                            type="text" 
-                            id="search-input" 
-                            class="search-input" 
-                            placeholder="Search by title, artist, or album..."
-                            oninput="handleSearch(this.value)"
-                        >
+                        <input type="text" id="search-input" class="search-input"
+                            placeholder="Search by title, artist, or album..." oninput="handleSearch(this.value)">
                     </div>
                 </div>
 
@@ -98,7 +96,7 @@
                     <button class="btn-icon" title="Database Settings" onclick="openModal('modal-config')">
                         <i class="ri-key-2-line"></i>
                     </button>
-                    
+
                     <!-- Header User Profile / Login Pill -->
                     <div class="user-profile-container" id="header-user-container">
                         <!-- Dynamic via app.js -->
@@ -112,9 +110,11 @@
                     <div class="intro-hero-badge">
                         <i class="ri-pulse-fill"></i> Dynamic Music Streaming Platform
                     </div>
-                    <h1 class="intro-hero-title">Experience Endless Sound with <span class="gradient-text">Zmusic</span></h1>
+                    <h1 class="intro-hero-title">Experience Endless Sound with <span class="gradient-text">Zmusic</span>
+                    </h1>
                     <p class="intro-hero-subtitle">
-                        Stream high-quality Cloudinary audio tracks directly synced with your Supabase database. Enjoy full player controls, real-time search, and an integrated Admin panel.
+                        Stream high-quality Cloudinary audio tracks directly synced with your Supabase database. Enjoy
+                        full player controls, real-time search, and an integrated Admin panel.
                     </p>
 
                     <div class="intro-cta-group">
@@ -139,7 +139,8 @@
                                 <i class="ri-headphone-fill"></i>
                             </div>
                             <h3>Cloudinary Audio Streaming</h3>
-                            <p>Plays MP3 audio links smoothly with play/pause, scrubbable progress bar, volume slider, and track controls.</p>
+                            <p>Plays MP3 audio links smoothly with play/pause, scrubbable progress bar, volume slider,
+                                and track controls.</p>
                         </div>
 
                         <div class="feature-card">
@@ -147,7 +148,8 @@
                                 <i class="ri-database-2-fill"></i>
                             </div>
                             <h3>Supabase Database Sync</h3>
-                            <p>Zero hardcoded tracks! Every song details, cover art, and audio link are dynamically fetched from your database.</p>
+                            <p>Zero hardcoded tracks! Every song details, cover art, and audio link are dynamically
+                                fetched from your database.</p>
                         </div>
 
                         <div class="feature-card">
@@ -155,7 +157,8 @@
                                 <i class="ri-dashboard-fill"></i>
                             </div>
                             <h3>Admin CRUD Management</h3>
-                            <p>Add new tracks with live image preview, edit existing details, and delete songs with automatic real-time updates.</p>
+                            <p>Add new tracks with live image preview, edit existing details, and delete songs with
+                                automatic real-time updates.</p>
                         </div>
 
                         <div class="feature-card">
@@ -163,7 +166,8 @@
                                 <i class="ri-search-eye-line"></i>
                             </div>
                             <h3>Instant Search & Filter</h3>
-                            <p>Find your favorite tracks in seconds by filtering song titles, artist names, or album titles in real time.</p>
+                            <p>Find your favorite tracks in seconds by filtering song titles, artist names, or album
+                                titles in real time.</p>
                         </div>
                     </div>
                 </div>
@@ -233,12 +237,14 @@
                         <form id="add-song-form" onsubmit="handleAddSong(event)">
                             <div class="form-group">
                                 <label class="form-label" for="add-title">Song Title *</label>
-                                <input type="text" id="add-title" class="form-input" placeholder="e.g. Let Me Go" required>
+                                <input type="text" id="add-title" class="form-input" placeholder="e.g. Let Me Go"
+                                    required>
                             </div>
 
                             <div class="form-group">
                                 <label class="form-label" for="add-artist">Artist *</label>
-                                <input type="text" id="add-artist" class="form-input" placeholder="e.g. JayJen" required>
+                                <input type="text" id="add-artist" class="form-input" placeholder="e.g. JayJen"
+                                    required>
                             </div>
 
                             <div class="form-group">
@@ -248,28 +254,20 @@
 
                             <div class="form-group">
                                 <label class="form-label" for="add-cover">Cover Image URL</label>
-                                <input 
-                                    type="url" 
-                                    id="add-cover" 
-                                    class="form-input" 
-                                    placeholder="https://images.unsplash.com/..." 
-                                    oninput="updateImagePreview('add-cover', 'add-preview-img')"
-                                >
+                                <input type="url" id="add-cover" class="form-input"
+                                    placeholder="https://images.unsplash.com/..."
+                                    oninput="updateImagePreview('add-cover', 'add-preview-img')">
                                 <div class="preview-box">
                                     <img id="add-preview-img" src="" alt="Cover Preview" style="display:none;">
-                                    <span id="add-preview-placeholder" style="font-size: 0.8rem; color: var(--text-dim);">Image Preview</span>
+                                    <span id="add-preview-placeholder"
+                                        style="font-size: 0.8rem; color: var(--text-dim);">Image Preview</span>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="form-label" for="add-audio">Cloudinary Audio URL *</label>
-                                <input 
-                                    type="url" 
-                                    id="add-audio" 
-                                    class="form-input" 
-                                    placeholder="https://res.cloudinary.com/..." 
-                                    required
-                                >
+                                <input type="url" id="add-audio" class="form-input"
+                                    placeholder="https://res.cloudinary.com/..." required>
                             </div>
 
                             <button type="submit" class="btn-primary" id="btn-submit-add">
@@ -280,9 +278,11 @@
 
                     <!-- Right: Manage Songs Data Table -->
                     <div class="admin-card">
-                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                        <div
+                            style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
                             <h3 style="font-size: 1.1rem; font-weight: 700;">
-                                <i class="ri-list-settings-line" style="color: var(--accent-cyan);"></i> Existing Songs (<span id="admin-song-count">0</span>)
+                                <i class="ri-list-settings-line" style="color: var(--accent-cyan);"></i> Existing Songs
+                                (<span id="admin-song-count">0</span>)
                             </h3>
                         </div>
 
@@ -314,13 +314,16 @@
                                 <i class="ri-pulse-fill"></i>
                             </div>
                             <h2 class="auth-title" id="auth-title-text">Welcome to Zmusic</h2>
-                            <p class="auth-subtitle" id="auth-subtitle-text">Sign in to your account to unlock full streaming experience</p>
+                            <p class="auth-subtitle" id="auth-subtitle-text">Sign in to your account to unlock full
+                                streaming experience</p>
                         </div>
 
                         <!-- Auth Mode Tabs -->
                         <div class="auth-tabs">
-                            <button type="button" class="auth-tab active" id="tab-signin" onclick="switchAuthTab('signin')">Sign In</button>
-                            <button type="button" class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">Sign Up</button>
+                            <button type="button" class="auth-tab active" id="tab-signin"
+                                onclick="switchAuthTab('signin')">Sign In</button>
+                            <button type="button" class="auth-tab" id="tab-signup"
+                                onclick="switchAuthTab('signup')">Sign Up</button>
                         </div>
 
                         <!-- Auth Form -->
@@ -337,7 +340,8 @@
                                 <label class="form-label" for="auth-email">Email Address *</label>
                                 <div class="input-with-icon">
                                     <i class="ri-mail-line input-icon"></i>
-                                    <input type="email" id="auth-email" class="form-input" placeholder="name@example.com" required>
+                                    <input type="email" id="auth-email" class="form-input"
+                                        placeholder="name@example.com" required>
                                 </div>
                             </div>
 
@@ -345,8 +349,10 @@
                                 <label class="form-label" for="auth-password">Password *</label>
                                 <div class="input-with-icon">
                                     <i class="ri-lock-2-line input-icon"></i>
-                                    <input type="password" id="auth-password" class="form-input" placeholder="••••••••" required>
-                                    <button type="button" class="toggle-pwd-btn" onclick="togglePasswordVisibility('auth-password', this)">
+                                    <input type="password" id="auth-password" class="form-input" placeholder="••••••••"
+                                        required>
+                                    <button type="button" class="toggle-pwd-btn"
+                                        onclick="togglePasswordVisibility('auth-password', this)">
                                         <i class="ri-eye-off-line"></i>
                                     </button>
                                 </div>
@@ -357,10 +363,13 @@
                                     <input type="checkbox" id="auth-remember" checked>
                                     <span>Remember me</span>
                                 </label>
-                                <a href="javascript:void(0)" onclick="showToast('Password reset link will be sent to your email.', 'info')" style="color: var(--accent-primary); text-decoration: none;">Forgot Password?</a>
+                                <a href="javascript:void(0)"
+                                    onclick="showToast('Password reset link will be sent to your email.', 'info')"
+                                    style="color: var(--accent-primary); text-decoration: none;">Forgot Password?</a>
                             </div>
 
-                            <button type="submit" class="btn-primary" id="btn-auth-submit" style="width: 100%; padding: 14px; font-size: 1rem;">
+                            <button type="submit" class="btn-primary" id="btn-auth-submit"
+                                style="width: 100%; padding: 14px; font-size: 1rem;">
                                 <i class="ri-login-circle-line"></i> Sign In to Zmusic
                             </button>
                         </form>
@@ -373,7 +382,8 @@
                                     <i class="ri-user-smile-line" style="color: var(--accent-cyan);"></i> Demo User
                                 </button>
                                 <button type="button" class="btn-demo" onclick="quickLoginDemo('admin')">
-                                    <i class="ri-shield-user-line" style="color: var(--accent-secondary);"></i> Demo Admin
+                                    <i class="ri-shield-user-line" style="color: var(--accent-secondary);"></i> Demo
+                                    Admin
                                 </button>
                             </div>
                         </div>
@@ -387,7 +397,9 @@
     <footer class="player-bar">
         <!-- Left: Track Details -->
         <div class="player-track-info">
-            <img id="player-cover-img" class="player-cover" src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=200&auto=format&fit=crop" alt="Now Playing">
+            <img id="player-cover-img" class="player-cover"
+                src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=200&auto=format&fit=crop"
+                alt="Now Playing">
             <div class="player-details">
                 <div id="player-song-title" class="player-title">Select a track</div>
                 <div id="player-song-artist" class="player-artist">No audio playing</div>
@@ -436,16 +448,8 @@
                 <button class="btn-ctrl" id="btn-mute" title="Mute/Unmute" onclick="toggleMute()">
                     <i class="ri-volume-up-line" id="volume-icon"></i>
                 </button>
-                <input 
-                    type="range" 
-                    id="volume-slider" 
-                    class="volume-slider" 
-                    min="0" 
-                    max="1" 
-                    step="0.01" 
-                    value="0.8" 
-                    oninput="handleVolumeChange(this.value)"
-                >
+                <input type="range" id="volume-slider" class="volume-slider" min="0" max="1" step="0.01" value="0.8"
+                    oninput="handleVolumeChange(this.value)">
             </div>
         </div>
     </footer>
@@ -462,7 +466,7 @@
             </div>
             <form id="edit-song-form" onsubmit="handleUpdateSong(event)">
                 <input type="hidden" id="edit-id">
-                
+
                 <div class="form-group">
                     <label class="form-label" for="edit-title">Song Title *</label>
                     <input type="text" id="edit-title" class="form-input" required>
@@ -480,12 +484,8 @@
 
                 <div class="form-group">
                     <label class="form-label" for="edit-cover">Cover Image URL</label>
-                    <input 
-                        type="url" 
-                        id="edit-cover" 
-                        class="form-input" 
-                        oninput="updateImagePreview('edit-cover', 'edit-preview-img')"
-                    >
+                    <input type="url" id="edit-cover" class="form-input"
+                        oninput="updateImagePreview('edit-cover', 'edit-preview-img')">
                     <div class="preview-box">
                         <img id="edit-preview-img" src="" alt="Cover Preview">
                     </div>
@@ -516,7 +516,8 @@
             <form onsubmit="handleSaveConfig(event)">
                 <div class="form-group">
                     <label class="form-label" for="config-url">Supabase Project URL *</label>
-                    <input type="url" id="config-url" class="form-input" placeholder="https://your-project-id.supabase.co" required>
+                    <input type="url" id="config-url" class="form-input"
+                        placeholder="https://your-project-id.supabase.co" required>
                 </div>
 
                 <div class="form-group">
@@ -537,4 +538,5 @@
     <!-- Application Core Script -->
     <script src="app.js"></script>
 </body>
+
 </html>

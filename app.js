@@ -369,7 +369,7 @@ async function handleLogout() {
     if (supabaseClient && supabaseClient.auth) {
         try {
             await supabaseClient.auth.signOut();
-        } catch (e) {}
+        } catch (e) { }
     }
     currentUser = null;
     localStorage.removeItem('zmusic_user');
